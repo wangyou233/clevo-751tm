@@ -448,15 +448,15 @@ static int ec_auto_duty_adjust(void) {
     if (temp >= 80 && duty < 100)
         return 100;
     if (temp >= 70 && duty < 90)
-        return 90;
-    if (temp >= 60 && duty < 80)
-        return 80;
-    if (temp >= 50 && duty < 70)
-        return 70;
-    if (temp >= 40 && duty < 60)
-        return 60;
-    if (temp >= 30 && duty < 50)
         return 50;
+    if (temp >= 60 && duty < 80)
+        return 40;
+    if (temp >= 50 && duty < 70)
+        return 40;
+    if (temp >= 40 && duty < 60)
+        return 40;
+    if (temp >= 30 && duty < 50)
+        return 40;
     if (temp >= 20 && duty < 40)
         return 40;
     if (temp >= 10 && duty < 30)
@@ -467,13 +467,13 @@ static int ec_auto_duty_adjust(void) {
     if (temp <= 25 && duty > 40)
         return 40;
     if (temp <= 35 && duty > 50)
-        return 50;
+        return 40;
     if (temp <= 45 && duty > 60)
-        return 60;
+        return 40;
     if (temp <= 55 && duty > 70)
-        return 70;
+        return 40;
     if (temp <= 65 && duty > 80)
-        return 80;
+        return 50;
     if (temp <= 75 && duty > 90)
         return 90;
     //
@@ -500,10 +500,7 @@ static int ec_query_fan_rpms(void) {
 }
 
 static int ec_write_fan_duty(int duty_percentage) {
-    if (duty_percentage < 60 || duty_percentage > 100) {
-        printf("Wrong fan duty to write: %d\n", duty_percentage);
-        return EXIT_FAILURE;
-    }
+
     double v_d = ((double) duty_percentage) / 100.0 * 255.0;
     int v_i = (int) v_d;
     return ec_io_do(0x99, 0x01, v_i);
